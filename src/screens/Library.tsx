@@ -18,6 +18,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { collection, query, getDocs, orderBy, deleteDoc, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { Draft, PostStatus } from '../types';
 import { format } from 'date-fns';
+import { isDemoMode, DEMO_DRAFTS } from '../demoData';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -43,6 +44,14 @@ export default function Library() {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [demo, setDemo] = useState(isDemoMode());
+
+  // Listen for demo mode changes
+  useEffect(() => {
+    const handler = () => setDemo(isDemoMode());
+    window.addEventListener('demo-mode-change', handler);
+    return () => window.removeEventListener('demo-mode-change', handler);
+  }, []);
 
   useEffect(() => {
     if (user) fetchDrafts();
@@ -117,7 +126,9 @@ export default function Library() {
     setIsEditing(true);
   };
 
-  const filteredDrafts = drafts.filter(d =>
+  const allDrafts = demo ? [...DEMO_DRAFTS, ...drafts] : drafts;
+
+  const filteredDrafts = allDrafts.filter(d =>
     d.topic.toLowerCase().includes(search.toLowerCase()) ||
     d.voiceName.toLowerCase().includes(search.toLowerCase()) ||
     (d.editedText || d.generatedText).toLowerCase().includes(search.toLowerCase())

@@ -15,6 +15,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { collection, query, getDocs, addDoc, updateDoc, deleteDoc, doc, Timestamp, orderBy } from 'firebase/firestore';
 import { CalendarEntry, VoiceProfile, PostStatus, Platform, Language } from '../types';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth, isToday, getDay } from 'date-fns';
+import { isDemoMode, DEMO_CALENDAR_ENTRIES } from '../demoData';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -72,6 +73,14 @@ export default function Calendar() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<EntryForm>(EMPTY_FORM);
+  const [demo, setDemo] = useState(isDemoMode());
+
+  // Listen for demo mode changes
+  useEffect(() => {
+    const handler = () => setDemo(isDemoMode());
+    window.addEventListener('demo-mode-change', handler);
+    return () => window.removeEventListener('demo-mode-change', handler);
+  }, []);
 
   useEffect(() => {
     if (user) fetchData();
@@ -208,8 +217,10 @@ export default function Calendar() {
 
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+  const allEntries = demo ? [...entries, ...DEMO_CALENDAR_ENTRIES] : entries;
+
   const getEntriesForDay = (day: Date) =>
-    entries.filter(e => isSameDay(e.date.toDate(), day));
+    allEntries.filter(e => isSameDay(e.date.toDate(), day));
 
   const selectedDayEntries = selectedDay ? getEntriesForDay(selectedDay) : [];
 

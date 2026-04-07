@@ -17,6 +17,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { collection, query, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { HashtagSet } from '../types';
 import { CONTENT_GUIDELINES } from '../constants';
+import { isDemoMode } from '../demoData';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -30,7 +31,19 @@ export default function Settings() {
   const [newSetName, setNewSetName] = useState('');
   const [newSetTags, setNewSetTags] = useState('');
   const [isAddingSet, setIsAddingSet] = useState(false);
-  const [apiStatus, setApiStatus] = useState<'checking' | 'ok' | 'missing_key' | 'error'>('checking');
+  const [apiStatus, setApiStatus] = useState<'checking' | 'ok' | 'missing_key' | 'error' | 'demo'>('checking');
+  const [demo, setDemo] = useState(isDemoMode());
+
+  // Listen for demo mode changes
+  useEffect(() => {
+    const handler = () => {
+      const on = isDemoMode();
+      setDemo(on);
+      if (on) setApiStatus('demo');
+    };
+    window.addEventListener('demo-mode-change', handler);
+    return () => window.removeEventListener('demo-mode-change', handler);
+  }, []);
 
   const isAdmin = user?.email === 'anna.ritoper@gmail.com';
 
@@ -42,6 +55,10 @@ export default function Settings() {
   }, [user]);
 
   const checkApiStatus = async () => {
+    if (isDemoMode()) {
+      setApiStatus('demo');
+      return;
+    }
     try {
       const res = await fetch('/api/health');
       const data = await res.json();
@@ -220,13 +237,15 @@ export default function Settings() {
                 <div className="flex items-center gap-3">
                   <div className={cn(
                     "w-3 h-3 rounded-full",
-                    apiStatus === 'ok' ? "bg-brand-teal animate-pulse" : apiStatus === 'checking' ? "bg-brand-navy/20 animate-pulse" : "bg-brand-coral"
+                    apiStatus === 'demo' ? "bg-brand-teal animate-pulse" : apiStatus === 'ok' ? "bg-brand-teal animate-pulse" : apiStatus === 'checking' ? "bg-brand-navy/20 animate-pulse" : "bg-brand-coral"
                   )} />
                   <p className="font-bold text-brand-navy text-sm">
-                    {apiStatus === 'ok' ? 'Anthropic Claude Connected' : apiStatus === 'checking' ? 'Checking...' : 'Server not reachable'}
+                    {apiStatus === 'demo' ? 'Demo Mode (pas d\'appel API)' : apiStatus === 'ok' ? 'Anthropic Claude Connected' : apiStatus === 'checking' ? 'Checking...' : 'Server not reachable'}
                   </p>
                 </div>
-                <p className="text-[10px] text-brand-navy/40 font-mono">Model: claude-sonnet-4-6</p>
+                <p className="text-[10px] text-brand-navy/40 font-mono">
+                  {apiStatus === 'demo' ? 'Donnees fictives' : 'Model: claude-sonnet-4-6'}
+                </p>
               </div>
             </div>
           </section>

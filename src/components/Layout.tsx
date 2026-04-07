@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, signIn } from '../firebase';
 import Sidebar from './Sidebar';
 import { motion } from 'motion/react';
+import { isDemoMode, setDemoMode } from '../demoData';
 
 export default function Layout() {
   const [user, loading] = useAuthState(auth);
+  const [demo, setDemo] = useState(isDemoMode());
+
+  const toggleDemo = () => {
+    const next = !demo;
+    setDemoMode(next);
+    setDemo(next);
+    // Force re-render across the app
+    window.dispatchEvent(new Event('demo-mode-change'));
+  };
 
   if (loading) {
     return (
@@ -47,6 +57,32 @@ export default function Layout() {
     <div className="min-h-screen bg-brand-warm-white flex">
       <Sidebar />
       <main className="flex-1 ml-[64px] p-8">
+        {/* Demo Mode toggle */}
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={toggleDemo}
+            className={
+              demo
+                ? "flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all bg-brand-teal text-white"
+                : "flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all border border-brand-navy/15 text-brand-navy/40 hover:border-brand-teal hover:text-brand-teal"
+            }
+          >
+            <div className={
+              demo
+                ? "w-2 h-2 rounded-full bg-white animate-pulse"
+                : "w-2 h-2 rounded-full bg-brand-navy/20"
+            } />
+            Demo Mode
+          </button>
+        </div>
+
+        {/* Demo banner */}
+        {demo && (
+          <div className="mb-4 px-4 py-2 bg-brand-teal/10 border border-brand-teal/20 rounded-lg text-brand-teal text-xs font-bold text-center">
+            Mode Demo actif
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

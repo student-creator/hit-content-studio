@@ -1,4 +1,20 @@
 import { SYSTEM_PROMPT_GUIDELINES, cleanGeneratedText } from "../constants";
+import { isDemoMode, DEMO_POST_TEXT, DEMO_SVG } from "../demoData";
+
+// Simulate typing effect: reveal text character by character over ~2.5s
+const simulateStreaming = async (text: string, onChunk: (chunk: string) => void): Promise<string> => {
+  const chars = text.split('');
+  const totalTime = 2500; // 2.5 seconds
+  const interval = totalTime / chars.length;
+  for (let i = 0; i < chars.length; i++) {
+    onChunk(chars[i]);
+    // Batch in groups of 3-5 chars with a small delay for natural feel
+    if (i % 4 === 0) {
+      await new Promise(r => setTimeout(r, interval * 4));
+    }
+  }
+  return text;
+};
 
 export const generatePost = async (params: {
   voiceName: string;
@@ -66,6 +82,14 @@ ${params.draftInput}
 Rewrite this now. No preamble, no explanation. Just the rewritten post.`;
 
   const userMessage = params.mode === 'generate' ? `Topic: ${params.topic}` : `Draft: ${params.draftInput}`;
+
+  // Demo mode: return hardcoded content with simulated streaming
+  if (isDemoMode()) {
+    if (params.onChunk) {
+      return await simulateStreaming(DEMO_POST_TEXT, params.onChunk);
+    }
+    return DEMO_POST_TEXT;
+  }
 
   if (params.onChunk) {
     // Try streaming first; fall back to non-streaming if it fails
@@ -169,6 +193,20 @@ export const analyseTone = async (params: {
 
 IMPORTANT: If images are provided, read the text from the screenshots first, then perform the analysis. Return ONLY the JSON object.`;
 
+  // Demo mode: return a sample tone analysis
+  if (isDemoMode()) {
+    await new Promise(r => setTimeout(r, 1500));
+    return {
+      styleTags: ['Data-driven', 'Strategic', 'Empathetic', 'Institutional', 'Conversational'],
+      structurePattern: ['Hook with stat', 'Key data points', 'Insight / question', 'Call to action'],
+      formalityScore: 6,
+      emojiUsage: 'moderate' as const,
+      languageNotes: 'Uses short impactful sentences mixed with data points. Balances formal institutional tone with accessible language.',
+      sampleSentence: "L'innovation en sante n'est pas une option, c'est un imperatif strategique pour l'equite d'acces aux soins.",
+      systemPromptFragment: 'Write in a confident, data-informed voice that balances institutional credibility with warmth and accessibility. Use statistics as hooks and pose rhetorical questions to engage the reader. Keep paragraphs short and punchy.',
+    };
+  }
+
   const content: any[] = [];
 
   if (params.posts && params.posts.length > 0) {
@@ -226,6 +264,12 @@ export const generateVisualSvg = async (params: {
   aspectRatio: '1:1' | '4:5' | '9:16';
   additionalRules?: string;
 }) => {
+  // Demo mode: return sample SVG
+  if (isDemoMode()) {
+    await new Promise(r => setTimeout(r, 1500));
+    return DEMO_SVG;
+  }
+
   const viewBox = params.aspectRatio === '1:1' ? "0 0 1080 1080" : params.aspectRatio === '4:5' ? "0 0 1080 1350" : "0 0 1080 1920";
 
   const prompt = `Generate a complete, valid SVG infographic (viewBox="${viewBox}") using the EDHEC Management in Innovative Health visual identity.
