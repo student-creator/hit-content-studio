@@ -13,24 +13,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (stream) {
       res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Cache-Control', 'no-cache, no-transform');
       res.setHeader('Connection', 'keep-alive');
+      res.setHeader('X-Accel-Buffering', 'no');
 
-      const response = await client.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        system,
-        messages: [{ role: 'user', content: userMessage }],
-        stream: true,
-      });
+      try {
+        const response = await client.messages.create({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2000,
+          system,
+          messages: [{ role: 'user', content: userMessage }],
+          stream: true,
+        });
 
-      for await (const chunk of response) {
-        if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-          res.write(`data: ${JSON.stringify({ text: chunk.delta.text })}\n\n`);
+        for await (const chunk of response) {
+          if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+            res.write(`data: ${JSON.stringify({ text: chunk.delta.text })}\n\n`);
+          }
+        }
+        res.write('data: [DONE]\n\n');
+        res.end();
+      } catch (streamErr: any) {
+        // If streaming fails mid-way, try to send an error event
+        try {
+          res.write(`data: ${JSON.stringify({ error: streamErr.message })}\n\n`);
+          res.end();
+        } catch {
+          res.end();
         }
       }
-      res.write('data: [DONE]\n\n');
-      res.end();
     } else {
       const response = await client.messages.create({
         model: 'claude-sonnet-4-6',
@@ -41,6 +52,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.json(response);
     }
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message });
+    }
   }
 }

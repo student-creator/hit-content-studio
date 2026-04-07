@@ -119,8 +119,9 @@ export default function Generate() {
         }
       });
       if (fullText) setGeneratedContent(fullText);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Generation failed:", error);
+      setGeneratedContent(`[Generation error: ${error.message || 'Unknown error'}. Please try again.]`);
     } finally {
       setIsGenerating(false);
     }

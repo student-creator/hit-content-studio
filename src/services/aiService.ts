@@ -68,40 +68,74 @@ Rewrite this now. No preamble, no explanation. Just the rewritten post.`;
   const userMessage = params.mode === 'generate' ? `Topic: ${params.topic}` : `Draft: ${params.draftInput}`;
 
   if (params.onChunk) {
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system, userMessage, stream: true }),
-    });
+    // Try streaming first; fall back to non-streaming if it fails
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system, userMessage, stream: true }),
+      });
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Server error');
-    }
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Server error');
+      }
 
-    const reader = res.body!.getReader();
-    const decoder = new TextDecoder();
-    let fullText = "";
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('text/event-stream')) {
+        // Server returned JSON instead of SSE (streaming not supported)
+        const data = await res.json();
+        const text = data.content?.[0]?.text || '';
+        const cleaned = cleanGeneratedText(text);
+        params.onChunk(cleaned);
+        return cleaned;
+      }
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split('\n');
-      for (const line of lines) {
-        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-          try {
-            const data = JSON.parse(line.slice(6));
-            fullText += data.text;
-            params.onChunk(data.text);
-          } catch {
-            // skip malformed lines
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.error) throw new Error(data.error);
+              fullText += data.text;
+              params.onChunk(data.text);
+            } catch (parseErr: any) {
+              if (parseErr.message && !parseErr.message.includes('JSON')) throw parseErr;
+              // skip malformed lines
+            }
           }
         }
       }
-    }
 
-    return cleanGeneratedText(fullText);
+      return cleanGeneratedText(fullText);
+    } catch (streamError: any) {
+      // Fallback: try non-streaming request
+      console.warn('Streaming failed, falling back to non-streaming:', streamError.message);
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system, userMessage, stream: false }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Server error');
+      }
+
+      const data = await res.json();
+      const text = data.content?.[0]?.text || '';
+      const cleaned = cleanGeneratedText(text);
+      params.onChunk(cleaned);
+      return cleaned;
+    }
   } else {
     const res = await fetch('/api/generate', {
       method: 'POST',
