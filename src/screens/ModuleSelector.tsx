@@ -12,7 +12,7 @@ import { useI18n } from '../i18n';
 
 export default function ModuleSelector() {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t, lang, setLang } = useI18n();
 
   const modules = [
     { id: 'content', title: t('hub.content.title'), description: t('hub.content.desc'), icon: PenLine, path: '/generate', iconColor: 'text-brand-bordeaux', topColor: '#6B1E2E' },
@@ -22,7 +22,21 @@ export default function ModuleSelector() {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-warm-white flex flex-col items-center justify-center p-6 sm:p-12">
+    <div className="relative min-h-screen bg-brand-warm-white flex flex-col items-center justify-center p-6 sm:p-12">
+      <div className="absolute top-6 right-6 flex bg-brand-bordeaux/10 rounded-full p-0.5 text-[10px] font-bold">
+        <button
+          onClick={() => setLang('EN')}
+          className={`px-3 py-1 rounded-full transition-all ${lang === 'EN' ? 'bg-brand-bordeaux text-white' : 'text-brand-bordeaux/70 hover:text-brand-bordeaux'}`}
+        >
+          EN
+        </button>
+        <button
+          onClick={() => setLang('FR')}
+          className={`px-3 py-1 rounded-full transition-all ${lang === 'FR' ? 'bg-brand-bordeaux text-white' : 'text-brand-bordeaux/70 hover:text-brand-bordeaux'}`}
+        >
+          FR
+        </button>
+      </div>
       <header className="mb-16 text-center">
         <motion.img
           src={EDHEC_LOGO_PATH}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   PenLine,
@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { EDHEC_LOGO_PATH } from '../edhecLogo';
 import { useI18n } from '../i18n';
 
 function cn(...inputs: ClassValue[]) {
@@ -37,32 +36,12 @@ export default function Sidebar() {
     <motion.aside
       data-tour="sidebar-nav"
       className={cn(
-        'fixed left-0 top-[56px] h-[calc(100vh-56px)] bg-white border-r border-brand-bordeaux/10 z-30 flex flex-col transition-all duration-300 ease-in-out',
+        'fixed left-0 top-[72px] h-[calc(100vh-72px)] bg-white border-r border-brand-bordeaux/10 z-30 flex flex-col transition-all duration-300 ease-in-out',
         isExpanded ? 'w-[220px]' : 'w-[64px]'
       )}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
-      <Link
-        to="/hub"
-        className="p-4 flex items-center h-16 border-b border-brand-bordeaux/5 overflow-hidden hover:bg-brand-bordeaux/5 transition-colors"
-      >
-        <img src={EDHEC_LOGO_PATH} alt="EDHEC" className="flex-shrink-0 w-8 h-8 object-contain" />
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              className="ml-3 flex flex-col"
-            >
-              <span className="font-headline font-bold text-brand-bordeaux text-sm leading-tight">HIT Content</span>
-              <span className="text-[8px] font-body font-bold text-brand-navy/60 uppercase tracking-tighter leading-none">Studio</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Link>
-
       <nav className="flex-1 py-4 space-y-1">
         {navItems.map((item) => (
           <NavLink

@@ -130,9 +130,9 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-brand-warm-white flex flex-col">
       {/* EDHEC persistent banner */}
-      <header className="bg-brand-bordeaux text-white flex items-center justify-between px-6 py-3 shadow-sm z-40">
+      <header className="bg-brand-bordeaux text-white flex items-center justify-between px-6 py-4 shadow-sm z-40 h-[72px]">
         <div className="flex items-center gap-4">
-          <img src="/EDHEC_Logo_horizontal_white.png" alt="EDHEC" className="h-8 w-auto object-contain" />
+          <img src="/EDHEC_Logo_horizontal_white.png" alt="EDHEC" className="h-10 w-auto object-contain" />
           <div className="hidden md:flex items-center gap-3 pl-4 border-l border-white/20">
             <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/80">
               {t('chrome.chair')}

@@ -9,13 +9,13 @@ type Dict = Record<string, { FR: string; EN: string }>;
 export const STRINGS: Dict = {
   // Module selector
   'hub.heading': { FR: 'Que souhaitez-vous faire ?', EN: 'What would you like to do?' },
-  'hub.content.title': { FR: 'Content Studio', EN: 'Content Studio' },
-  'hub.content.desc': { FR: 'Posts et newsletters', EN: 'Posts and newsletters' },
-  'hub.visual.title': { FR: 'Visual Studio', EN: 'Visual Studio' },
-  'hub.visual.desc': { FR: 'Visuels et carrousels', EN: 'Visuals and carousels' },
+  'hub.content.title': { FR: 'Studio de contenu', EN: 'Content Studio' },
+  'hub.content.desc': { FR: 'Rediger des posts et newsletters', EN: 'Write posts and newsletters' },
+  'hub.visual.title': { FR: 'Studio visuel', EN: 'Visual Studio' },
+  'hub.visual.desc': { FR: 'Creer visuels et carrousels', EN: 'Create visuals and carousels' },
   'hub.calendar.title': { FR: 'Calendrier', EN: 'Calendar' },
   'hub.calendar.desc': { FR: 'Planifier vos publications', EN: 'Plan your publications' },
-  'hub.voices.title': { FR: 'Voices', EN: 'Voices' },
+  'hub.voices.title': { FR: 'Voix', EN: 'Voices' },
   'hub.voices.desc': { FR: 'Gerer les profils de ton', EN: 'Manage voice profiles' },
 
   // Header / chrome
@@ -124,6 +124,34 @@ export const STRINGS: Dict = {
   'vis.subtitle': { FR: 'Creez des visuels pour vos publications', EN: 'Create visuals for your posts' },
   'vis.quick': { FR: 'Mode rapide', EN: 'Quick mode' },
   'vis.custom': { FR: 'Mode personnalise', EN: 'Custom mode' },
+
+  // Tutorial steps
+  'tour.welcome.title': { FR: 'Bienvenue dans HIT Content Studio', EN: 'Welcome to HIT Content Studio' },
+  'tour.welcome.desc': { FR: 'Visite rapide des cinq modules et de la barre laterale. Environ une minute.', EN: 'Quick tour of all five modules and the sidebar. Takes about a minute.' },
+  'tour.sidebar.title': { FR: 'Navigation laterale', EN: 'Sidebar navigation' },
+  'tour.sidebar.desc': { FR: 'Passez d\'un module a l\'autre. Survolez pour deplier.', EN: 'Jump between modules here. Hover to expand.' },
+  'tour.content.title': { FR: '1. Studio de contenu', EN: '1. Content Studio' },
+  'tour.content.desc': { FR: 'Generez ou affinez des posts LinkedIn dans une voix choisie.', EN: 'Generate or refine LinkedIn posts in a chosen voice.' },
+  'tour.voice.title': { FR: 'Choisir une voix', EN: 'Pick a voice' },
+  'tour.voice.desc': { FR: 'Selectionnez le membre de l\'equipe au nom duquel le post sera redige.', EN: 'Choose which team member the post is written as.' },
+  'tour.generate.title': { FR: 'Generer', EN: 'Generate' },
+  'tour.generate.desc': { FR: 'Le texte s\'affiche en direct sur la droite.', EN: 'Output streams live on the right.' },
+  'tour.visuals.title': { FR: '2. Studio visuel', EN: '2. Visual Studio' },
+  'tour.visuals.desc': { FR: 'Creez des carrousels et visuels aux couleurs de la marque.', EN: 'Create branded carousels and single visuals for each post.' },
+  'tour.visualsMode.title': { FR: 'Rapide ou personnalise', EN: 'Quick or custom' },
+  'tour.visualsMode.desc': { FR: 'Choisissez une mise en page preetablie ou construisez slide par slide.', EN: 'Pick a preset layout or build slide by slide.' },
+  'tour.calendar.title': { FR: '3. Calendrier', EN: '3. Calendar' },
+  'tour.calendar.desc': { FR: 'Planifiez la ligne editoriale. Cliquez sur un jour pour voir les entrees.', EN: 'Plan the editorial schedule. Click a day to see entries.' },
+  'tour.calendarAdd.title': { FR: 'Ajouter un post', EN: 'Add a post' },
+  'tour.calendarAdd.desc': { FR: 'Creez une entree de calendrier et liez la a un brouillon.', EN: 'Create a new calendar entry and link it to a draft.' },
+  'tour.voices.title': { FR: '4. Voix', EN: '4. Voices' },
+  'tour.voices.desc': { FR: 'Gerez les profils de ton IA de chaque membre de l\'equipe.', EN: 'Manage AI tone profiles for each team member.' },
+  'tour.voicesCreate.title': { FR: 'Creer une voix', EN: 'Create a voice' },
+  'tour.voicesCreate.desc': { FR: 'Collez des exemples de posts et l\'IA en extrait le ton.', EN: 'Paste sample posts and the AI extracts the tone.' },
+  'tour.library.title': { FR: '5. Bibliotheque', EN: '5. Draft Library' },
+  'tour.library.desc': { FR: 'Tous les brouillons enregistres. Recherchez, editez, exportez.', EN: 'Every saved draft lives here. Search, edit, and export.' },
+  'tour.styleguide.title': { FR: 'Style Guide', EN: 'Style Guide' },
+  'tour.styleguide.desc': { FR: 'Regles appliquees a chaque post genere. Ajoutez les votres.', EN: 'Rules applied to every generated post. Add your own.' },
 };
 
 interface I18nValue {

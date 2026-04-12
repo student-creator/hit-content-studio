@@ -89,81 +89,81 @@ function ts(year: number, month: number, day: number): Timestamp {
 export const DEMO_CALENDAR_ENTRIES: CalendarEntry[] = [
   {
     id: 'demo-cal-1',
-    date: ts(2026, 4, 8),
+    date: ts(2026, 4, 7),
     voiceProfileId: 'demo',
     voiceName: 'Deborah',
     avatarColor: '#2A7D6B',
     platform: 'LinkedIn',
     language: 'FR',
-    theme: 'HIT Certificates',
-    topic: 'Temoignage participant HIT Certificate',
-    status: 'Publie',
+    theme: 'HIT Content',
+    topic: 'Certificat IA et Management en Sante : dernieres places disponibles',
+    status: 'Pret',
     createdAt: ts(2026, 4, 1),
   },
   {
     id: 'demo-cal-2',
-    date: ts(2026, 4, 10),
+    date: ts(2026, 4, 21),
+    voiceProfileId: 'demo',
+    voiceName: 'Deborah',
+    avatarColor: '#2A7D6B',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'HIT Content',
+    topic: 'Temoignage alumni : comment le certificat HIT a transforme ma pratique',
+    status: 'A rediger',
+    createdAt: ts(2026, 4, 1),
+  },
+  {
+    id: 'demo-cal-3',
+    date: ts(2026, 4, 9),
     voiceProfileId: 'demo',
     voiceName: 'Loick',
     avatarColor: '#D4614A',
     platform: 'LinkedIn',
     language: 'FR',
-    theme: 'Strategie et Leadership',
-    topic: 'Leadership en sante : les competences cles',
-    status: 'Publie',
-    createdAt: ts(2026, 4, 1),
-  },
-  {
-    id: 'demo-cal-3',
-    date: ts(2026, 4, 15),
-    voiceProfileId: 'demo',
-    voiceName: 'Deborah',
-    avatarColor: '#2A7D6B',
-    platform: 'LinkedIn',
-    language: 'FR+EN',
-    theme: 'HIT Certificates',
-    topic: 'Healthcare Innovation : pourquoi se former',
+    theme: 'Strategie',
+    topic: 'Strategie hospitaliere : trois leviers pour integrer l\'IA generative',
     status: 'Pret',
     createdAt: ts(2026, 4, 1),
   },
   {
     id: 'demo-cal-4',
-    date: ts(2026, 4, 17),
+    date: ts(2026, 4, 23),
     voiceProfileId: 'demo',
     voiceName: 'Loick',
     avatarColor: '#D4614A',
     platform: 'LinkedIn',
     language: 'FR',
-    theme: 'Barometre',
-    topic: 'IA et confiance des patients',
-    status: 'Brouillon',
+    theme: 'Strategie',
+    topic: 'Leadership en sante : piloter la transformation numerique sans perdre le sens',
+    status: 'A rediger',
     createdAt: ts(2026, 4, 1),
   },
   {
     id: 'demo-cal-5',
-    date: ts(2026, 4, 22),
+    date: ts(2026, 4, 2),
     voiceProfileId: 'demo',
-    voiceName: 'Deborah',
-    avatarColor: '#2A7D6B',
+    voiceName: 'EDHEC',
+    avatarColor: '#6B1E2E',
     platform: 'LinkedIn',
     language: 'FR',
-    theme: 'Webinaire',
-    topic: 'Webinaire menopause et travail',
-    status: 'A rediger',
-    createdAt: ts(2026, 4, 1),
+    theme: 'Barometre',
+    topic: 'Barometre Ipsos x EDHEC : 63% des femmes ont un acces difficile au specialiste',
+    status: 'Publie',
+    createdAt: ts(2026, 3, 28),
   },
   {
     id: 'demo-cal-6',
-    date: ts(2026, 4, 24),
+    date: ts(2026, 4, 15),
     voiceProfileId: 'demo',
-    voiceName: 'Loick',
-    avatarColor: '#D4614A',
+    voiceName: 'Simone Whale',
+    avatarColor: '#6B1E2E',
     platform: 'LinkedIn',
-    language: 'EN',
-    theme: 'Thought leadership',
-    topic: 'Digital health trends 2026',
-    status: 'A rediger',
-    createdAt: ts(2026, 4, 1),
+    language: 'FR',
+    theme: 'Webinaire',
+    topic: 'Replay webinaire : IA generative et parcours patient',
+    status: 'Brouillon',
+    createdAt: ts(2026, 4, 10),
   },
 ];
 
@@ -211,36 +211,57 @@ On vous attend !
 
 #MedInTechs #EDHEC #InnovationSante #HealthTech #eSante`,
     editedText: '',
-    status: 'Publie',
-    createdAt: ts(2026, 2, 28),
-    updatedAt: ts(2026, 2, 28),
+    status: 'Pret',
+    createdAt: ts(2026, 4, 5),
+    updatedAt: ts(2026, 4, 5),
   },
   {
     id: 'demo-draft-3',
     voiceProfileId: 'simone-whale-default',
+    voiceName: 'Loick',
+    platform: 'LinkedIn',
+    language: 'FR',
+    contentType: 'Post',
+    topic: 'Strategie hospitaliere et IA generative',
+    stats: 'Trois leviers d\'integration',
+    generatedText: `Integrer l'IA generative dans une strategie hospitaliere sans casser l'existant : trois leviers a activer.
+
+1. Cadrer les cas d'usage a fort impact clinique et administratif.
+2. Former les equipes a l'esprit critique face aux sorties des modeles.
+3. Piloter par la donnee et mesurer l'effet reel sur le parcours patient.
+
+Sujet a creuser pour un prochain post. Vos retours d'experience m'interessent.`,
+    editedText: '',
+    status: 'Brouillon',
+    createdAt: ts(2026, 4, 9),
+    updatedAt: ts(2026, 4, 10),
+  },
+  {
+    id: 'demo-draft-4',
+    voiceProfileId: 'simone-whale-default',
     voiceName: 'Simone Whale',
     platform: 'LinkedIn',
     language: 'FR',
-    contentType: 'Barometre',
-    topic: 'IA en sante : 94% des Francais veulent etre informes',
-    stats: '94% information patients, 67% confiance IA supervisee',
-    generatedText: `\u{1F4CA} IA et sante : les Francais veulent savoir.
+    contentType: 'Newsletter',
+    topic: 'Newsletter HIT : avril 2026',
+    stats: 'Certificat HIT, Barometre, MedInTechs replay',
+    generatedText: `Chers lecteurs,
 
-Notre barometre Ipsos x Chaire Management in Innovative Health (EDHEC) revele un chiffre fort :
+Dans cette edition d'avril 2026 de la newsletter de la Chaire Management in Innovative Health (EDHEC) :
 
-\u{1F449} 94% des Francais estiment que les patients doivent etre informes quand l'IA est utilisee dans leur parcours de soin.
+Le Barometre Ipsos x EDHEC 2026 est sorti. Les chiffres cles sur la sante connectee, l'IA generative et l'acces aux soins.
 
-Ce n'est pas un rejet de la technologie. Au contraire :
-\u{1F449} 67% font confiance a l'IA quand elle est supervisee par un professionnel de sante.
+Les inscriptions au Certificat IA et Management en Sante sont ouvertes. Prochaine promotion en septembre 2026.
 
-Le message est clair : les Francais veulent de la transparence, pas de la mefiance.
+Le replay du webinaire sur l'IA generative et le parcours patient est disponible en acces libre.
 
-L'adoption de l'IA en sante passera par la confiance. Et la confiance passe par l'information.
+A lire aussi : trois articles signes par nos alumni sur la transformation numerique des hopitaux.
 
-#IAenSante #SanteConnectee #EDHEC #Ipsos #eSante #DigitalHealth`,
+Bonne lecture,
+L'equipe HIT`,
     editedText: '',
-    status: 'Pret',
-    createdAt: ts(2026, 1, 28),
-    updatedAt: ts(2026, 1, 28),
+    status: 'Brouillon',
+    createdAt: ts(2026, 4, 11),
+    updatedAt: ts(2026, 4, 11),
   },
 ];

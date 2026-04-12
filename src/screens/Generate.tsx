@@ -11,7 +11,6 @@ import {
   Flag,
   ChevronDown,
   ChevronUp,
-  Plus,
   X
 } from 'lucide-react';
 import { db } from '../firebase';
@@ -191,12 +190,6 @@ export default function Generate() {
                 )}
               </button>
             ))}
-            <button
-              onClick={() => setIsVoiceCreatorOpen(true)}
-              className="w-9 h-9 rounded-full border-2 border-dashed border-brand-bordeaux/20 flex items-center justify-center text-brand-bordeaux/40 hover:text-brand-bordeaux hover:border-brand-bordeaux/40 transition-all"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
           </div>
 
           {selectedVoice && (
