@@ -81,26 +81,25 @@ export default function Voices() {
   }, [voices.length]);
 
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-12" data-tour="module-voices">
-      {/* Left Side - List */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-headline text-2xl font-bold text-brand-bordeaux">Voices</h2>
-          <button
-            data-tour="voices-create"
-            onClick={() => setIsCreating(true)}
-            className="p-2 bg-brand-bordeaux text-white rounded-full hover:bg-brand-bordeaux/90 transition-all"
-          >
-            <Plus className="w-5 h-5" />
-          </button>
-        </div>
+    <div className="max-w-7xl mx-auto" data-tour="module-voices">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="font-headline text-3xl font-bold text-brand-bordeaux">Voices</h2>
+        <button
+          data-tour="voices-create"
+          onClick={() => setIsCreating(true)}
+          className="p-2 bg-brand-bordeaux text-white rounded-full hover:bg-brand-bordeaux/90 transition-all"
+        >
+          <Plus className="w-5 h-5" />
+        </button>
+      </div>
 
-        <div className="space-y-4">
-          {voices.map(voice => (
-            <div key={voice.id} className="card p-4 hover:border-brand-bordeaux/30 transition-all group">
-              <div className="flex items-center gap-3 mb-3">
+      <div className="grid gap-6 mb-12" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
+        {voices.map(voice => (
+          <div key={voice.id} className="card p-6 hover:border-brand-bordeaux/30 transition-all group">
+            <div className="flex items-start gap-4 mb-4">
+              <label className="relative w-20 h-20 rounded-full cursor-pointer flex-shrink-0 group/photo" title="Upload profile photo">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-headline font-bold overflow-hidden"
+                  className="w-20 h-20 rounded-full flex items-center justify-center text-white font-headline font-bold text-2xl overflow-hidden"
                   style={{ backgroundColor: voice.avatarColor }}
                 >
                   {voice.avatarPhoto ? (
@@ -109,40 +108,42 @@ export default function Voices() {
                     voice.name.charAt(0)
                   )}
                 </div>
-                <div className="overflow-hidden">
-                  <p className="font-bold text-sm truncate">{voice.name}</p>
-                  <p className="text-[10px] text-brand-navy/60 truncate">{voice.role}</p>
+                <div className="absolute inset-0 rounded-full bg-brand-navy/50 opacity-0 group-hover/photo:opacity-100 flex items-center justify-center transition-all">
+                  <Upload className="w-5 h-5 text-white" />
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-1 mb-3">
-                {voice.styleTags.slice(0, 3).map(tag => (
-                  <span key={tag} className="px-2 py-0.5 bg-brand-bordeaux/5 text-brand-bordeaux text-[8px] font-bold rounded-full">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between pt-3 border-t border-brand-bordeaux/5">
-                <div className="flex gap-1">
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePhotoUpload(voice.id, e)} />
+              </label>
+              <div className="flex-1 min-w-0">
+                <p className="font-headline font-bold text-lg text-brand-bordeaux truncate">{voice.name}</p>
+                <p className="text-xs text-brand-navy/60 leading-snug">{voice.role}</p>
+                <div className="flex gap-1 mt-2">
                   {voice.languages.map(l => (
-                    <span key={l} className="text-[8px] font-bold text-brand-navy/40">{l}</span>
+                    <span key={l} className="text-[9px] font-bold text-brand-navy/50 bg-brand-warm-white px-1.5 py-0.5 rounded">{l}</span>
                   ))}
-                </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                  <label className="text-brand-navy/40 hover:text-brand-bordeaux cursor-pointer" title="Upload photo">
-                    <Upload className="w-3 h-3" />
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePhotoUpload(voice.id, e)} />
-                  </label>
-                  <button className="text-brand-navy/40 hover:text-brand-bordeaux"><Edit3 className="w-3 h-3" /></button>
-                  <button className="text-brand-navy/40 hover:text-brand-coral"><Trash2 className="w-3 h-3" /></button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {voice.styleTags.slice(0, 4).map(tag => (
+                <span key={tag} className="px-2 py-0.5 bg-brand-bordeaux/5 text-brand-bordeaux text-[9px] font-bold rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-brand-bordeaux/5">
+              <label className="text-brand-navy/40 hover:text-brand-bordeaux cursor-pointer p-1" title="Upload photo">
+                <Upload className="w-3.5 h-3.5" />
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePhotoUpload(voice.id, e)} />
+              </label>
+              <button className="text-brand-navy/40 hover:text-brand-bordeaux p-1"><Edit3 className="w-3.5 h-3.5" /></button>
+              <button className="text-brand-navy/40 hover:text-brand-coral p-1"><Trash2 className="w-3.5 h-3.5" /></button>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Right Side - Wizard */}
-      <div className="min-h-[600px]">
+      {/* Wizard */}
+      <div>
         <AnimatePresence mode="wait">
           {isCreating ? (
             <motion.div

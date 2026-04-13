@@ -41,6 +41,7 @@ export default function Generate() {
   const [voices, setVoices] = useState<VoiceProfile[]>([SIMONE_WHALE_DEFAULT]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isVoiceCreatorOpen, setIsVoiceCreatorOpen] = useState(false);
+  const [isVoiceDropdownOpen, setIsVoiceDropdownOpen] = useState(false);
   const [generatedContent, setGeneratedContent] = useState('');
   const [lengthWarning, setLengthWarning] = useState('');
   const [isHashtagsExpanded, setIsHashtagsExpanded] = useState(false);
@@ -178,44 +179,69 @@ export default function Generate() {
   return (
     <div className="max-w-7xl mx-auto" data-tour="module-content">
       {/* Voice Profile Selector */}
-      <div data-tour="voice-selector" className="mb-12 bg-white rounded-2xl p-6 border border-brand-bordeaux/5 shadow-sm">
-        <label className="text-[10px] font-bold text-brand-coral uppercase tracking-[0.2em] mb-4 block">Posting As</label>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3">
-            {voices.map(voice => (
-              <button
-                key={voice.id}
-                onClick={() => setSelectedVoice(voice)}
-                className={cn(
-                  "relative w-9 h-9 rounded-full flex items-center justify-center text-white font-headline font-bold text-sm overflow-hidden transition-all",
-                  selectedVoice?.id === voice.id ? "ring-2 ring-brand-bordeaux ring-offset-2" : "opacity-60 hover:opacity-100"
-                )}
-                style={{ backgroundColor: voice.avatarColor }}
-              >
-                {voice.avatarPhoto ? (
-                  <img src={voice.avatarPhoto} alt={voice.name} className="w-full h-full object-cover" />
-                ) : (
-                  voice.name.charAt(0)
-                )}
-              </button>
-            ))}
+      <div data-tour="voice-selector" className="mb-6 bg-white rounded-2xl p-4 border border-brand-bordeaux/5 shadow-sm relative">
+        <label className="text-[10px] font-bold text-brand-coral uppercase tracking-[0.2em] mb-2 block">Posting As</label>
+        <button
+          type="button"
+          onClick={() => setIsVoiceDropdownOpen(o => !o)}
+          className="flex items-center gap-4 w-full text-left"
+        >
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-headline font-bold text-sm overflow-hidden flex-shrink-0"
+            style={{ backgroundColor: selectedVoice?.avatarColor || '#6B1E2E' }}
+          >
+            {selectedVoice?.avatarPhoto ? (
+              <img src={selectedVoice.avatarPhoto} alt={selectedVoice.name} className="w-full h-full object-cover" />
+            ) : (
+              selectedVoice?.name.charAt(0) || '?'
+            )}
           </div>
-
-          {selectedVoice && (
+          <div className="flex flex-col flex-1">
+            <span className="font-headline text-base text-brand-bordeaux font-bold leading-tight">
+              {selectedVoice?.name || 'Select a voice'}
+            </span>
+            <span className="text-xs text-brand-navy/50 font-medium">
+              {selectedVoice?.role || ''}
+            </span>
+          </div>
+          <ChevronDown className={cn("w-4 h-4 text-brand-navy/40 transition-transform", isVoiceDropdownOpen && "rotate-180")} />
+        </button>
+        <AnimatePresence>
+          {isVoiceDropdownOpen && (
             <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex flex-col pl-6 border-l border-brand-bordeaux/10"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              className="absolute left-0 right-0 top-full mt-1 bg-white border border-brand-bordeaux/10 rounded-xl shadow-lg z-30 overflow-hidden"
             >
-              <span className="font-headline text-base text-brand-bordeaux font-bold leading-tight">
-                {selectedVoice.name}
-              </span>
-              <span className="text-xs text-brand-navy/50 font-medium">
-                {selectedVoice.role}
-              </span>
+              {voices.map(voice => (
+                <button
+                  key={voice.id}
+                  onClick={() => { setSelectedVoice(voice); setIsVoiceDropdownOpen(false); }}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-brand-warm-white transition-all",
+                    selectedVoice?.id === voice.id && "bg-brand-bordeaux/5"
+                  )}
+                >
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white font-headline font-bold text-xs overflow-hidden flex-shrink-0"
+                    style={{ backgroundColor: voice.avatarColor }}
+                  >
+                    {voice.avatarPhoto ? (
+                      <img src={voice.avatarPhoto} alt={voice.name} className="w-full h-full object-cover" />
+                    ) : (
+                      voice.name.charAt(0)
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-brand-bordeaux leading-tight">{voice.name}</span>
+                    <span className="text-[10px] text-brand-navy/50">{voice.role}</span>
+                  </div>
+                </button>
+              ))}
             </motion.div>
           )}
-        </div>
+        </AnimatePresence>
       </div>
 
       <header className="mb-8">

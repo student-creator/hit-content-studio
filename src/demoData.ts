@@ -88,36 +88,12 @@ function ts(year: number, month: number, day: number): Timestamp {
   return Timestamp.fromDate(new Date(year, month - 1, day, 12, 0, 0));
 }
 
+const SAMPLE_LI_URL = 'https://www.linkedin.com/posts/chaire-management-innovative-health_edhec-hit-activity-123456789';
+
 export const DEMO_CALENDAR_ENTRIES: CalendarEntry[] = [
   {
-    id: 'demo-cal-1',
-    date: ts(2026, 4, 7),
-    voiceProfileId: 'demo',
-    voiceName: 'Deborah',
-    avatarColor: '#2A7D6B',
-    platform: 'LinkedIn',
-    language: 'FR',
-    theme: 'HIT Content',
-    topic: 'Certificat IA et Management en Sante : dernieres places disponibles',
-    status: 'Pret',
-    createdAt: ts(2026, 4, 1),
-  },
-  {
-    id: 'demo-cal-2',
-    date: ts(2026, 4, 21),
-    voiceProfileId: 'demo',
-    voiceName: 'Deborah',
-    avatarColor: '#2A7D6B',
-    platform: 'LinkedIn',
-    language: 'FR',
-    theme: 'HIT Content',
-    topic: 'Temoignage alumni : comment le certificat HIT a transforme ma pratique',
-    status: 'A rediger',
-    createdAt: ts(2026, 4, 1),
-  },
-  {
-    id: 'demo-cal-3',
-    date: ts(2026, 4, 9),
+    id: 'demo-cal-loick-apr2',
+    date: ts(2026, 4, 2),
     voiceProfileId: 'demo',
     voiceName: 'Loick',
     avatarColor: '#D4614A',
@@ -125,11 +101,79 @@ export const DEMO_CALENDAR_ENTRIES: CalendarEntry[] = [
     language: 'FR',
     theme: 'Strategie',
     topic: 'Strategie hospitaliere : trois leviers pour integrer l\'IA generative',
-    status: 'Pret',
+    status: 'Publie',
+    linkedinUrl: SAMPLE_LI_URL,
+    createdAt: ts(2026, 3, 28),
+  },
+  {
+    id: 'demo-cal-deborah-apr7',
+    date: ts(2026, 4, 7),
+    voiceProfileId: 'demo',
+    voiceName: 'Deborah',
+    avatarColor: '#2A7D6B',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'Certificats HIT',
+    topic: 'Certificat IA et Management en Sante : dernieres places disponibles',
+    status: 'Publie',
+    linkedinUrl: SAMPLE_LI_URL,
     createdAt: ts(2026, 4, 1),
   },
   {
-    id: 'demo-cal-4',
+    id: 'demo-cal-loick-apr9',
+    date: ts(2026, 4, 9),
+    voiceProfileId: 'demo',
+    voiceName: 'Loick',
+    avatarColor: '#D4614A',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'Leadership',
+    topic: 'Leadership en sante : piloter la transformation numerique sans perdre le sens',
+    status: 'Publie',
+    linkedinUrl: SAMPLE_LI_URL,
+    createdAt: ts(2026, 4, 2),
+  },
+  {
+    id: 'demo-cal-deborah-apr14',
+    date: ts(2026, 4, 14),
+    voiceProfileId: 'demo',
+    voiceName: 'Deborah',
+    avatarColor: '#2A7D6B',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'Certificats HIT',
+    topic: 'Temoignage alumni : comment le certificat HIT a transforme ma pratique',
+    status: 'Pret',
+    createdAt: ts(2026, 4, 8),
+  },
+  {
+    id: 'demo-cal-loick-apr16',
+    date: ts(2026, 4, 16),
+    voiceProfileId: 'demo',
+    voiceName: 'Loick',
+    avatarColor: '#D4614A',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'Innovation',
+    topic: 'IA generative et parcours patient : ce que nous apprend le terrain',
+    status: 'Pret',
+    createdAt: ts(2026, 4, 10),
+  },
+  {
+    id: 'demo-cal-deborah-apr21',
+    date: ts(2026, 4, 21),
+    voiceProfileId: 'demo',
+    voiceName: 'Deborah',
+    avatarColor: '#2A7D6B',
+    platform: 'LinkedIn',
+    language: 'FR',
+    theme: 'Barometre',
+    topic: 'Barometre sante connectee : focus sur l\'acces aux soins des femmes',
+    status: 'Pret',
+    createdAt: ts(2026, 4, 12),
+  },
+  {
+    id: 'demo-cal-loick-apr23',
     date: ts(2026, 4, 23),
     voiceProfileId: 'demo',
     voiceName: 'Loick',
@@ -137,35 +181,22 @@ export const DEMO_CALENDAR_ENTRIES: CalendarEntry[] = [
     platform: 'LinkedIn',
     language: 'FR',
     theme: 'Strategie',
-    topic: 'Leadership en sante : piloter la transformation numerique sans perdre le sens',
-    status: 'A rediger',
-    createdAt: ts(2026, 4, 1),
+    topic: 'Trois enseignements du Barometre 2026 pour les directions hospitalieres',
+    status: 'Pret',
+    createdAt: ts(2026, 4, 12),
   },
   {
-    id: 'demo-cal-5',
-    date: ts(2026, 4, 2),
+    id: 'demo-cal-deborah-apr28',
+    date: ts(2026, 4, 28),
     voiceProfileId: 'demo',
-    voiceName: 'EDHEC',
-    avatarColor: '#6B1E2E',
-    platform: 'LinkedIn',
-    language: 'FR',
-    theme: 'Barometre',
-    topic: 'Barometre Ipsos x EDHEC : 63% des femmes ont un acces difficile au specialiste',
-    status: 'Publie',
-    createdAt: ts(2026, 3, 28),
-  },
-  {
-    id: 'demo-cal-6',
-    date: ts(2026, 4, 15),
-    voiceProfileId: 'demo',
-    voiceName: 'Simone Whale',
-    avatarColor: '#6B1E2E',
+    voiceName: 'Deborah',
+    avatarColor: '#2A7D6B',
     platform: 'LinkedIn',
     language: 'FR',
     theme: 'Webinaire',
-    topic: 'Replay webinaire : IA generative et parcours patient',
-    status: 'Brouillon',
-    createdAt: ts(2026, 4, 10),
+    topic: 'Replay webinaire HIT : IA generative et formation des managers en sante',
+    status: 'Pret',
+    createdAt: ts(2026, 4, 12),
   },
 ];
 
@@ -173,13 +204,13 @@ export const DEMO_CALENDAR_ENTRIES: CalendarEntry[] = [
 
 export const DEMO_DRAFTS: Draft[] = [
   {
-    id: 'demo-draft-1',
+    id: 'demo-draft-barometre',
     voiceProfileId: 'simone-whale-default',
     voiceName: 'Simone Whale',
     platform: 'LinkedIn',
     language: 'FR',
     contentType: 'Barometre',
-    topic: 'Sante connectee et IA : ou en sont les Francais ?',
+    topic: 'Barometre sante connectee 2026 : ou en sont les Francais ?',
     stats: '74% IA generative, 54% sante, 63% femmes acces specialiste',
     generatedText: DEMO_POST_TEXT,
     editedText: '',
@@ -188,65 +219,97 @@ export const DEMO_DRAFTS: Draft[] = [
     updatedAt: ts(2026, 3, 8),
   },
   {
-    id: 'demo-draft-2',
+    id: 'demo-draft-medintechs',
     voiceProfileId: 'simone-whale-default',
-    voiceName: 'Simone Whale',
+    voiceName: 'Deborah',
     platform: 'LinkedIn',
     language: 'FR',
     contentType: 'Evenement',
-    topic: 'MedInTechs 2026 : retrouvez la Chaire au stand C21',
-    stats: '3 jours, 200+ exposants, stand C21',
-    generatedText: `\u{1F3E5} MedInTechs 2026 : la Chaire Management in Innovative Health (EDHEC) sera presente !
+    topic: 'MedInTechs 2026 : retour sur trois jours d\'echanges au stand C21',
+    stats: '3 jours, 200+ exposants, 40 rendez-vous alumni',
+    generatedText: `\u{1F3E5} MedInTechs 2026 : retour sur une edition intense pour la Chaire Management in Innovative Health (EDHEC).
 
-Retrouvez-nous au stand C21 du 9 au 11 mars pour echanger sur :
+Trois jours au stand C21, et une certitude : l'innovation en sante avance vite, mais le management doit suivre.
 
-\u{1F449} Les resultats de notre barometre 2026 sur la sante connectee
-\u{1F449} Nos programmes de formation en management de l'innovation en sante
-\u{1F449} Les perspectives de l'IA generative dans le parcours patient
+\u{1F449} 40 rendez-vous avec des alumni et des partenaires
+\u{1F449} 3 ateliers sur l'IA generative et le parcours patient
+\u{1F449} 1 table ronde sur les nouveaux modeles de formation
 
-Venez decouvrir comment l'innovation transforme le management de la sante.
+Merci a toutes celles et ceux qui sont passes nous voir. On en ressort avec des idees claires pour la suite.
 
-\u{1F4CD} Paris Expo, Porte de Versailles
-\u{1F4C5} 9, 10, 11 mars 2026
+Rendez-vous l'an prochain.
 
-On vous attend !
+#MedInTechs #EDHEC #InnovationSante #HealthTech`,
+    editedText: '',
+    status: 'Publie',
+    createdAt: ts(2026, 3, 12),
+    updatedAt: ts(2026, 3, 12),
+  },
+  {
+    id: 'demo-draft-certificats',
+    voiceProfileId: 'simone-whale-default',
+    voiceName: 'Deborah',
+    platform: 'LinkedIn',
+    language: 'FR',
+    contentType: 'Certificats HIT',
+    topic: 'Certificats HIT : dernieres places pour la promotion 2026',
+    stats: 'Certificat IA et Management en Sante, rentree septembre 2026',
+    generatedText: `\u{1F393} Les inscriptions au Certificat IA et Management en Sante de la Chaire Management in Innovative Health (EDHEC) sont ouvertes.
 
-#MedInTechs #EDHEC #InnovationSante #HealthTech #eSante`,
+Ce programme s'adresse aux professionnels de sante, managers et decideurs qui veulent comprendre, piloter et deployer l'IA dans leurs organisations.
+
+Au programme :
+\u{1F449} Fondamentaux de l'IA generative appliquee a la sante
+\u{1F449} Cas d'usage concrets : parcours patient, back-office, recherche clinique
+\u{1F449} Ethique, gouvernance des donnees et conformite
+\u{1F449} Projet applique en petit groupe
+
+Format executive, compatible avec une activite professionnelle. Prochaine promotion : septembre 2026.
+
+Candidatures ouvertes jusqu'au 30 juin.
+
+#EDHEC #FormationSante #IAenSante #Certificats`,
     editedText: '',
     status: 'Pret',
     createdAt: ts(2026, 4, 5),
     updatedAt: ts(2026, 4, 5),
   },
   {
-    id: 'demo-draft-3',
+    id: 'demo-draft-ia-sante',
     voiceProfileId: 'simone-whale-default',
     voiceName: 'Loick',
     platform: 'LinkedIn',
     language: 'FR',
-    contentType: 'Post',
-    topic: 'Strategie hospitaliere et IA generative',
-    stats: 'Trois leviers d\'integration',
-    generatedText: `Integrer l'IA generative dans une strategie hospitaliere sans casser l'existant : trois leviers a activer.
+    contentType: 'Thought leadership',
+    topic: 'IA en sante : trois conditions pour passer du pilote au deploiement',
+    stats: 'Trois conditions : cas d\'usage, donnees, culture',
+    generatedText: `Beaucoup de pilotes IA en sante. Tres peu de deploiements a l'echelle.
 
-1. Cadrer les cas d'usage a fort impact clinique et administratif.
-2. Former les equipes a l'esprit critique face aux sorties des modeles.
-3. Piloter par la donnee et mesurer l'effet reel sur le parcours patient.
+Trois conditions reviennent dans les projets qui tiennent :
 
-Sujet a creuser pour un prochain post. Vos retours d'experience m'interessent.`,
+1. Un cas d'usage qui resout un vrai probleme clinique ou operationnel, pas un POC pour cocher une case.
+2. Une donnee propre, accessible et gouvernee, avant meme de parler de modeles.
+3. Une culture qui accepte de revoir les process quand l'outil le justifie.
+
+Ce n'est pas l'IA qui bloque. Ce sont les trois conditions au-dessus.
+
+Curieux de lire vos retours de terrain.
+
+#IAenSante #ManagementSante #EDHEC`,
     editedText: '',
     status: 'Brouillon',
-    createdAt: ts(2026, 4, 9),
-    updatedAt: ts(2026, 4, 10),
+    createdAt: ts(2026, 4, 10),
+    updatedAt: ts(2026, 4, 11),
   },
   {
-    id: 'demo-draft-4',
+    id: 'demo-draft-newsletter',
     voiceProfileId: 'simone-whale-default',
     voiceName: 'Simone Whale',
     platform: 'LinkedIn',
     language: 'FR',
     contentType: 'Newsletter',
     topic: 'Newsletter HIT : avril 2026',
-    stats: 'Certificat HIT, Barometre, MedInTechs replay',
+    stats: 'Barometre, Certificats HIT, webinaire replay',
     generatedText: `Chers lecteurs,
 
 Dans cette edition d'avril 2026 de la newsletter de la Chaire Management in Innovative Health (EDHEC) :
@@ -256,8 +319,6 @@ Le Barometre Ipsos x EDHEC 2026 est sorti. Les chiffres cles sur la sante connec
 Les inscriptions au Certificat IA et Management en Sante sont ouvertes. Prochaine promotion en septembre 2026.
 
 Le replay du webinaire sur l'IA generative et le parcours patient est disponible en acces libre.
-
-A lire aussi : trois articles signes par nos alumni sur la transformation numerique des hopitaux.
 
 Bonne lecture,
 L'equipe HIT`,
