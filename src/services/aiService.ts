@@ -12,9 +12,9 @@ export function getLengthBounds(lengthTarget: string): { min: number; max: numbe
 // Hard char + token caps per length tier (LinkedIn-friendly).
 export function getLengthCaps(lengthTarget: string): { maxChars: number; maxTokens: number } {
   const t = (lengthTarget || '').toLowerCase();
-  if (t.startsWith('short')) return { maxChars: 800, maxTokens: 400 };
-  if (t.startsWith('long')) return { maxChars: 4000, maxTokens: 1800 };
-  return { maxChars: 2000, maxTokens: 1000 };
+  if (t.startsWith('short')) return { maxChars: 500, maxTokens: 200 };
+  if (t.startsWith('long')) return { maxChars: 2000, maxTokens: 800 };
+  return { maxChars: 1200, maxTokens: 500 };
 }
 
 export function countWords(text: string): number {
@@ -59,13 +59,18 @@ export const generatePost = async (params: {
   mode: 'generate' | 'refine';
   cible?: string;
   additionalRules?: string;
+  contextSources?: { title: string; content: string }[];
   onChunk?: (chunk: string) => void;
 }) => {
   const cibleLine = params.cible ? `- Target audience (cible): ${params.cible}. Adapt vocabulary, depth, and tone to this audience.` : '';
+  const contextBlock = (params.contextSources && params.contextSources.length > 0)
+    ? `\n\nReference material the post should draw from:\n${params.contextSources.map((s, i) => `[${i + 1}] ${s.title}\n${s.content}`).join('\n\n')}\n`
+    : '';
   const { min: minWords, max: maxWords } = getLengthBounds(params.lengthTarget);
   const { maxChars, maxTokens } = getLengthCaps(params.lengthTarget);
   const charLimit = Math.min(params.charLimit || maxChars, maxChars);
-  const lengthRule = `STRICT LENGTH RULE: the post must be between ${minWords} and ${maxWords} words AND under ${charLimit} characters. Do not exceed either limit under any circumstances. Count words and characters before responding.`;
+  const lengthRule = `STRICT LENGTH RULE: the post must be between ${minWords} and ${maxWords} words AND under ${charLimit} characters. Do not exceed either limit under any circumstances. Count words and characters before responding.
+You MUST stay under the character limit. Count carefully. LinkedIn posts should be punchy and scannable, not essays. Use short paragraphs, line breaks, and emojis strategically. Never exceed ${charLimit} characters total.`;
   const linkedInRule = params.platform === 'LinkedIn'
     ? `LINKEDIN POST FORMAT (mandatory):
 - Open with a one-line hook on its own line.
@@ -82,6 +87,7 @@ You are writing a ${params.platform} post on behalf of ${params.voiceName}. ${pa
 
 ${SYSTEM_PROMPT_GUIDELINES}
 ${params.additionalRules || ''}
+${contextBlock}
 
 Guidelines:
 - Match the language setting: ${params.language}
@@ -106,6 +112,7 @@ You are refining a draft ${params.platform} post to be published on behalf of ${
 
 ${SYSTEM_PROMPT_GUIDELINES}
 ${params.additionalRules || ''}
+${contextBlock}
 
 The user has provided a rough draft or idea below. Rewrite it fully in ${params.voiceName}'s voice while preserving their core intent, key facts, and any specific phrases they clearly want to keep.
 

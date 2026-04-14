@@ -57,6 +57,41 @@ export default function Generate() {
   const [styleRules, setStyleRules] = useState<StyleRule[]>([]);
   const [justCopied, setJustCopied] = useState(false);
   const [flagged, setFlagged] = useState(false);
+  type ContextEntry = { id: string; title: string; content: string; dateAdded: string };
+  const [contextLibrary, setContextLibrary] = useState<ContextEntry[]>(() => {
+    try { return JSON.parse(localStorage.getItem('contextLibrary') || '[]'); } catch { return []; }
+  });
+  const [activeContextIds, setActiveContextIds] = useState<string[]>([]);
+  const [isContextExpanded, setIsContextExpanded] = useState(false);
+  const [newContextTitle, setNewContextTitle] = useState('');
+  const [newContextBody, setNewContextBody] = useState('');
+
+  const persistContext = (entries: ContextEntry[]) => {
+    setContextLibrary(entries);
+    try { localStorage.setItem('contextLibrary', JSON.stringify(entries)); } catch {}
+  };
+  const addContextEntry = () => {
+    if (!newContextTitle.trim() || !newContextBody.trim()) return;
+    if (contextLibrary.length >= 5) return;
+    const entry: ContextEntry = {
+      id: `ctx-${Date.now()}`,
+      title: newContextTitle.trim(),
+      content: newContextBody.trim(),
+      dateAdded: new Date().toISOString(),
+    };
+    persistContext([...contextLibrary, entry]);
+    setActiveContextIds(ids => [...ids, entry.id]);
+    setNewContextTitle('');
+    setNewContextBody('');
+  };
+  const removeContextEntry = (id: string) => {
+    persistContext(contextLibrary.filter(e => e.id !== id));
+    setActiveContextIds(ids => ids.filter(i => i !== id));
+  };
+  const toggleContextActive = (id: string) => {
+    setActiveContextIds(ids => ids.includes(id) ? ids.filter(i => i !== id) : [...ids, id]);
+  };
+  const activeContextCount = activeContextIds.filter(id => contextLibrary.some(e => e.id === id)).length;
   const [toast, setToast] = useState('');
   const [saveCalOpen, setSaveCalOpen] = useState(false);
   const [calForm, setCalForm] = useState({ title: '', voice: '', date: '', status: 'Brouillon' as PostStatus });
@@ -194,6 +229,9 @@ export default function Generate() {
         mode,
         cible: cible || undefined,
         additionalRules,
+        contextSources: contextLibrary
+          .filter(e => activeContextIds.includes(e.id))
+          .map(e => ({ title: e.title, content: e.content })),
         onChunk: (chunk) => {
           setGeneratedContent(prev => prev + chunk);
         }
@@ -510,6 +548,96 @@ export default function Generate() {
                       <span className="block text-brand-navy/40 truncate mt-0.5">{set.hashtags.join(' ')}</span>
                     </button>
                   ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="border-t border-brand-bordeaux/5 pt-4">
+            <button
+              onClick={() => setIsContextExpanded(v => !v)}
+              className="flex items-center justify-between w-full text-brand-bordeaux font-bold text-xs uppercase tracking-widest"
+            >
+              <span className="flex items-center gap-2">
+                Context / Reference Material
+                {activeContextCount > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-brand-teal text-white text-[9px] font-bold normal-case tracking-normal">
+                    {activeContextCount} source{activeContextCount === 1 ? '' : 's'} active
+                  </span>
+                )}
+              </span>
+              {isContextExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            <AnimatePresence>
+              {isContextExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden mt-3 space-y-3"
+                >
+                  {contextLibrary.length === 0 && (
+                    <p className="text-[11px] text-brand-navy/50">
+                      Paste excerpts from brochures, reports, or previous posts. Toggle which entries are active for the next generation. Max 5 entries.
+                    </p>
+                  )}
+                  {contextLibrary.map(entry => {
+                    const active = activeContextIds.includes(entry.id);
+                    return (
+                      <div
+                        key={entry.id}
+                        className={cn(
+                          "rounded-md border p-3 transition-all",
+                          active ? "border-brand-teal/40 bg-brand-teal/5" : "border-brand-bordeaux/10 bg-white"
+                        )}
+                      >
+                        <div className="flex items-start gap-2">
+                          <input
+                            type="checkbox"
+                            checked={active}
+                            onChange={() => toggleContextActive(entry.id)}
+                            className="mt-1 accent-brand-teal"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-brand-bordeaux truncate">{entry.title}</p>
+                            <p className="text-[11px] text-brand-navy/60 line-clamp-2 mt-0.5">{entry.content}</p>
+                          </div>
+                          <button
+                            onClick={() => removeContextEntry(entry.id)}
+                            className="text-brand-navy/30 hover:text-brand-coral"
+                            title="Remove"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {contextLibrary.length < 5 && (
+                    <div className="space-y-2 pt-2 border-t border-brand-bordeaux/5">
+                      <input
+                        type="text"
+                        value={newContextTitle}
+                        onChange={(e) => setNewContextTitle(e.target.value)}
+                        placeholder="Source title (e.g. Barometre 2026 exec summary)"
+                        className="input-field text-xs"
+                      />
+                      <textarea
+                        rows={3}
+                        value={newContextBody}
+                        onChange={(e) => setNewContextBody(e.target.value)}
+                        placeholder="Paste excerpt here..."
+                        className="input-field resize-none text-xs"
+                      />
+                      <button
+                        onClick={addContextEntry}
+                        disabled={!newContextTitle.trim() || !newContextBody.trim()}
+                        className="text-[10px] font-bold text-brand-teal uppercase tracking-widest disabled:opacity-40"
+                      >
+                        + Add source
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
